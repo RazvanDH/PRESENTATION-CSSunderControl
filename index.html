@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Keeping your stylesheets under control</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+          <h2>Keeping your CSS <br>under control</h2>
+          <h5>- CSS architecture -</h5>
+          <p>
+            <small>by <a href="mailto:razvan.spatariu@fundingcircle.com">Razvan Spatariu</a></small>
+          </p>
+
+          <aside class="notes" data-markdown>
+          	* hi everyone
+            * the purpose of my talk is to make you aware about a simple technique on how to keep the CSS under control
+          </aside>
+        </section>
+
+        <section>
+        	<h2>CSS</h2>
+          <p>The language we all love to hate</p>
+        	<img src="/img/peter-css.gif">
+
+        	<aside class="notes" data-markdown>
+        		* I always complain about CSS and how silly it is
+            * the problem with CSS is not that it's a silly language, the problem with CSS is that it offers too many options
+            * you can write inline (please don't), you can have the style tag and throw there some CSS (please don't), or you can write it in a separate file
+            * even when you're writing it in a different file, the cascading nature of it allows us to mess it up really easy
+        	</aside>
+        </section>
+
+        <section>
+          <h2>What's the easiest way to fix a CSS issue?</h2>
+          <div class="fragment">
+            <p>...just increase specificity or use <code>!important</code></p>
+            <img src="/img/important.jpg">
+            <p>(please don't!)</p>
+          </div>
+
+          <aside class="notes">
+            * funny thing is that something as simple as CSS can render your website unusable for the users
+            * if we don't want to spend too much time trying to fix CSS we should have some rules in place, some standards so we all speak the same CSS
+          </aside>
+        </section>
+
+        <section>
+          <h2>No. 1 enemy for me?</h2>
+          <div class="fragment">
+            <h1>Specificty*</h1>
+            <p><code>#I .can't #even { display: none!important; }</code></p>
+            <img src="/img/fitting.gif">
+            <small>* Specificity is the means by which a browser decides which CSS property values are the most relevant to an element and therefore will be applied.</small>
+
+          </div>
+          <aside class="notes" data-markdown>
+            * specificity makes everything brittle
+            * relying on context for a style makes everything impossible to reuse
+            * so you have to add more styles, more exceptions, trying to fig a square peg through a round hole
+          </aside>
+        </section>
+
+        <section>
+          <h2>Specificity graph</h2>
+
+          <div class="col-2">
+            <h5>Old logged out</h5>
+            <img src="/img/specificity-old.jpg" alt="">
+          </div>
+          <div class="col-2">
+            <h5>Static content</h5>
+            <img src="/img/specificity-new.jpg" alt="">
+          </div>
+
+          <aside class="notes">
+
+          </aside>
+
+        </section>
+
+        <section>
+          <h1>How?</h1>
+          <img src="/img/sorcery.gif" alt="">
+        </section>
+
+        <section>
+          <h3>Introducing</h3>
+          <h1>BEM</h1>
+          </p><code>.block__element--modifier</code></p>
+        </section>
+
+        <section>
+          <h3>What is BEM?</h3>
+            <img src="/img/lego.jpg" alt="" width="30%">
+            <ul>
+              <li>it's a naming methodology</li>
+              <li>created by Yandex</li>
+              <li>it fakes a more scoped way of developing your CSS</li>
+              <li>it forces the developer to think in components rather than pages</li>
+            </ul>
+
+            <aside class="notes">
+              * think about pages being built as using lego
+              * pages are built using the same components (bricks) just arranged in a different way
+              * a group of bricks (a component) can form a larger brick (a new, more complex component)
+            </aside>
+        </section>
+
+        <section>
+          <h3>Inefficient way:</h3>
+          <div class="col-2"><img src="/img/example.jpg" alt=""></div>
+          <div class="col-2">
+            <pre><code>&lt;section class="autobid-tags"&gt;
+  &lt;h1 class="title"&gt;Our business loans can suit almost any business purpose:&lt;&sol;h1&gt;
+
+  &lt;ul class="tags"&gt;
+    &lt;li&gt;Expansion&lt;&sol;li&gt;
+    ...
+  &lt;&sol;ul&gt;
+  &lt;p&gt;And much more, just tell us in the application.&lt;&sol;p&gt;
+  &lt;a href="" class="button-blue"&gt;Register Now&lt;&sol;a&gt;
+&lt;&sol;section&gt;</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3><code>.block__element--modifier</code></h3>
+          <div class="col-2"><img src="/img/example.jpg" alt=""></div>
+          <div class="col-2">
+            <pre><code>&lt;section class="content-tags"&gt;
+  &lt;h1 class="content-tags__title"&gt;Our business loans can suit almost any business purpose:&lt;&sol;h1&gt;
+
+  &lt;ul class="content-tags__tags"&gt;
+    &lt;li&gt;Expansion&lt;&sol;li&gt;
+    ...
+  &lt;&sol;ul&gt;
+  &lt;p&gt;And much more, just tell us in the application.&lt;&sol;p&gt;
+  &lt;a href="" class="btn btn--regular btn--primary"&gt;Register Now&lt;&sol;a&gt;
+&lt;&sol;section&gt;</code></pre>
+        </section>
+
+        <section>
+          <h5>Example of using components and modifiers:</h5>
+
+          <img src="/img/example-1.png" alt="" class="no-border">
+          <pre><code>&lt;div class="message"&gt;
+  &lt;h3 class="message__title"&gt;Title of the message&lt;&sol;h3&gt;
+  &lt;p class="message__content"&gt;Lorem ipsum [...]&lt;&sol;p&gt;
+&lt;&sol;div&gt;</code></pre>
+
+
+          <img src="/img/example-2.png" alt="" class="no-border">
+          <pre><code>&lt;div class="message message--success"&gt;
+  &lt;h3 class="message__title"&gt;Title of the message&lt;&sol;h3&gt;
+  &lt;p class="message__content"&gt;Lorem ipsum [...]&lt;&sol;p&gt;
+&lt;&sol;div&gt;</code></pre>
+        </section>
+
+        <section>
+          <h5>Example of Sass implementation</h5>
+
+          <pre><code>.message {
+  ...
+  &__title { ... }
+  &__content { ... }
+}
+
+// differences between the default and the modifier
+.message--success {
+  ...
+  &__title { ... }
+  &__content { ... }
+}</code></pre>
+        </section>
+
+        <section>
+          <h1>Prefixed classes</h1>
+        </section>
+
+        <section>
+          <h3>Utility classes</h3>
+          <ul>
+            <li>quick to use classes</li>
+            <li>prefixed with <code>.u-&lt;UTILITY-NAME&gt;</code></li>
+            <li>can act as quick modifiers</li>
+            <li>they only have one strict result</li>
+          </ul>
+          <br><br>
+          <h4>Examples:</h4>
+          <pre><code>.u-center-text { text-align: center; }
+.u-block { display: block; }
+.u-relative { position: relative; }
+.u-img-round {
+  border-radius: 50%;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+          </code></pre>
+
+        </section>
+
+        <section>
+          <h3>Status classes</h3>
+
+          <ul>
+            <li>Used for showing different states of interactive objects</li>
+            <li>prefixed with <code>.is-&lt;STATE&gt;</code></li>
+            <li>applied/removed from elements using JavaScript</li>
+          </ul>
+          <br><br>
+          <h4>Examples:</h4>
+          <pre><code>.is-active { display: block; }
+.is-hidden { display: none; }
+.is-transparent { visibility: hidden; }
+.is-visible { opacity: 1; }</code></pre>
+        </section>
+
+        <section>
+          <h3>Binding JavaScript</h3>
+
+          <ul>
+            <li>never use classes for both styling and binding JS</li>
+            <li>prefix classes with <code>.js-&lt;FUNCTION&gt;</code></li>
+          </ul>
+          <br><br>
+          <h4>Examples:</h4>
+          <pre><code>&lt;span class="content-tags__tags js-insert-tags"&gt;...&lt;&sol;span&gt;</code></pre>
+        </section>
+
+        <section>
+          <h3>Let's recap</h3>
+          <ul>
+            <li>don't use inline CSS</li>
+            <li>don't increase specificity if not needed</li>
+            <li>never EVER use <code>!important</code></li>
+            <li>think about pages as a collection of small components</li>
+            <li>use BEM to create small islands (components) of styles</li>
+            <li>styling of an element should not rely on the context, except if that context is defined by BEM</li>
+            <li>use <code>.is-STATUS</code> to define the status</li>
+            <li>use <code>.js-FUNCTION</code> to bind JS</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Thank you!</h1>
+          <p>Questions?</p>
+          <img src="/img/nobones.gif" alt="">
+          <p><a href="mailto:razvan.spatariu@fundingcircle.com">razvan.spatariu@fundingcircle.com</a></p>
+        </section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
